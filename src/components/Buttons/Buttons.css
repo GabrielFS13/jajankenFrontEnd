@@ -1,0 +1,25 @@
+.button-list{
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    border: 2px solid black;
+    border-radius: 30px;
+}
+
+.button-list button{
+    width: 100px;
+    height: 75px;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    transition: .2s ease-out;
+}
+.button-list button:hover{
+    transform: scale(1.5);
+}
+
+.button-list button img{
+    max-width: 100%;
+    max-height: 100%;
+}

@@ -1,0 +1,14 @@
+*{
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  --bg: #141A26;
+  --font: #728EA6;
+}
+
+body{
+  height: 100vh;
+  color: var(--font);
+  background-color: var(--bg);
+}

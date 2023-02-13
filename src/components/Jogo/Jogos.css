@@ -1,0 +1,75 @@
+.jogo{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.jogo .escolhas {
+    width:  600px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px dashed black;
+    border-radius: 12px;
+}
+
+
+.choice{
+    max-width: 250px;
+    max-height: 100px;
+    padding: 20px;
+}
+
+
+.choice img{
+    width: 125px;
+    height: 90px;
+}
+
+
+.jogo div{
+    margin: 32px 12px;
+}
+
+.botoes{
+    width: 800px;
+}
+
+.win{
+    color: green;
+}
+
+.defeat{
+    color: red;
+}
+
+.draw{
+    color: gray;
+}
+
+.placar{
+    max-width: 600px;
+    display: flex;
+}
+
+.placar h2{
+    width: 300px;
+    text-align: center;
+}
+
+@media (max-width: 800px){
+  .botoes, .placar{
+    width: 100%;
+  }
+  .jogo .escolhas{
+    width: 100%;
+  }
+
+
+}
