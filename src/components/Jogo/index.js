@@ -4,7 +4,11 @@ import React, { useState, useEffect } from 'react';
 const { io } = require("socket.io-client");
 const link = process.env.REACT_APP_URL_SOCKET
 
-const socket = io(link);
+const socket = io(link, {
+    cors:{
+        secure: false
+    }
+});
 
 console.log(link)
 
