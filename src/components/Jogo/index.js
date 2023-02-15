@@ -47,8 +47,10 @@ const Jogos = () =>{
         socket.on("jogadas", (res) =>{
            setStatus(res.status)
            if(res.p1.id !== id){
+            setOponenteID(res.id)
             setOponente("/img/desenho/"+res.p1.item)
             }else{
+            setOponenteID(res.id)
             setOponente("/img/desenho/"+res.p2.item)
             }
         })
