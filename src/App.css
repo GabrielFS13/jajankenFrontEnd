@@ -8,7 +8,17 @@
 }
 
 body{
-  height: 100vh;
+  min-height: 100vh;
   color: var(--font);
   background-color: var(--bg);
+}
+
+.chat{
+  height: 100px;;
+  width: 200px;
+  overflow-y: scroll;
+}
+
+.chat form{
+  position: sticky;
 }

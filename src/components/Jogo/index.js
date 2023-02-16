@@ -28,37 +28,79 @@ const Jogos = () =>{
         }
     }
 
-    socket.on("connect", () => {
-       console.log("Novo Jogador Conectado")
-    });
 
     function enviaJogada(jogada){
         setEscolha(jogada)
+        setOponente('')
         const item = jogada.split('/')
         socket.emit('jogada', {
+            sala_code: code,
             skin: item[2],
             item: item[3],
             id: id
          })
         }
+    
+        function entraSala(e){
+            e.preventDefault()
+            setCode(e.target[0].value)
+            socket.emit("codigo_sala", { codigo: e.target[0].value, id: id })
+        }
+
+    function enviaChat(e){
+        e.preventDefault()
+        socket.emit("chat", {
+            nome: id,
+            msg: e.target[0].value
+        })
+        
+        
+    }
+
+
+
 
     useEffect( () =>{  
 
         socket.on("jogadas", (res) =>{
-           setStatus(res.status)
-           if(res.p1.id !== id){
-            setOponenteID(res.id)
-            setOponente("/img/desenho/"+res.p1.item)
-            }else{
-            setOponenteID(res.id)
-            setOponente("/img/desenho/"+res.p2.item)
-            }
+           console.log(res)
+           if(res.status === 'Empate!' || res.status === 'Esperando Oponente...'){
+            setStatus(res.status)
+            setOponente(res.p1.item)
+           }else{
+            if(res.p1.id == id){
+                setOponenteID(res.p2.id)
+                setOponente("/img/desenho/"+res.p2.item)
+                setStatus(res.p1.id + res.status)
+                }else{
+                setOponenteID(res.p1.id)
+                setOponente("/img/desenho/"+res.p1.item)
+                setStatus(res.p2.id + res.status)
+                }
+           }
+           
         })
-
 
         socket.on('logado', (res) =>{
             console.log(res)
             setOponenteID(res.player)
+        })
+
+        socket.on("novo_jogador", (res) =>{
+            console.log(res)
+            setOponenteID(res)
+
+        })
+        
+        socket.on("RoomCode", (res) =>{
+            setCode(res)
+        })
+
+        socket.on("revice_msg", (res) =>{
+            console.log(res)
+            setChat([...messages, res])
+
+            console.log(messages)
         })
         
     }, [socket])
@@ -71,16 +113,16 @@ const Jogos = () =>{
     const [escolha, setEscolha] = useState('')
     const [opoente, setOponente] = useState('')
     const [status, setStatus] = useState('')
+    const [code, setCode] = useState('')
+    const [messages, setChat] = useState([])
 
-    useEffect( () =>{
-
-        socket.emit("jogadores", {
-            player: id
-       })
-    }, [oponenteID])
 
     return(
         <section className="jogo">
+            <form onSubmit={(e) => entraSala(e)}>
+                <input type="text" placeholder='Codigo da sala' defaultValue={code} required/>
+                <button>Entrar</button>
+            </form>
             <div className='placar'>
                 <h2><input onChange={(e) => setID(e.target.value)} value={id} /></h2>
                 <h2>{oponenteID}</h2> 
@@ -102,6 +144,24 @@ const Jogos = () =>{
                         jogada={enviaJogada} 
                 />
             </div>
+            
+            <div className='chat'>
+                
+            {messages.map(item => {
+                    return(
+                        <>
+                            <u key={item.id}>{item.nome}: </u>
+                            <span key={item.msg}>{item.msg}</span>
+                            <br />
+                        </>
+                    )
+                })}
+
+            </div>
+            <form onSubmit={(e) => enviaChat(e)}>
+                    <input placeholder='Sua mensagem' />
+                    <button>Enviar</button>
+                </form> <br />
         </section>
     )
 }
