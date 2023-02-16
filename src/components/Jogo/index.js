@@ -41,8 +41,6 @@ const Jogos = () =>{
             "papel": "/img/minecraft/papel.png"
         }
     ]
-        
-    console.log(skins)
     
 
 
@@ -90,12 +88,10 @@ const Jogos = () =>{
            }
            else{
             if(res.p1.id === id){
-                setOponenteID(res.p2.id)
                 setOponente(`/img/${res.p2.skin}/${res.p2.item}`)
                 setStatus(`${res.p1.id} ${res.status}`)
                 setInter(false)
             }else{
-                setOponenteID(res.p1.id)
                 setOponente(`/img/${res.p1.skin}/${res.p1.item}`)
                 setStatus(`${res.p1.id} ${res.status}`)
                 setInter(false)
