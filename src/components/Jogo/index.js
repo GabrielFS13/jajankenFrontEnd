@@ -66,21 +66,21 @@ const Jogos = () =>{
 
         socket.on("jogadas", (res) =>{
            console.log(res)
-           if(res.status === 'Empate!' || res.status === 'Esperando Oponente...'){
+           if(res.status === 'Empate!'){
             setStatus(res.status)
-            setOponente(res.p1.item)
-           }else{
-            if(res.p1.id == id){
-                setOponenteID(res.p2.id)
-                setOponente("/img/desenho/"+res.p2.item)
-                setStatus(res.p1.id + res.status)
-                }else{
-                setOponenteID(res.p1.id)
-                setOponente("/img/desenho/"+res.p1.item)
-                setStatus(res.p2.id + res.status)
-                }
+            setOponente(`/img/${res.p1.skin}/${res.p1.item}`)
            }
-           
+           else{
+            if(res.p1.id === id){
+                setOponenteID(res.p2.id)
+                setOponente(`/img/${res.p2.skin}/${res.p2.item}`)
+                setStatus(`${res.p1.id} ${res.status}`)
+            }else{
+                setOponenteID(res.p1.id)
+                setOponente(`/img/${res.p1.skin}/${res.p1.item}`)
+                setStatus(`${res.p1.id} ${res.status}`)
+            }
+           }
         })
 
         socket.on('logado', (res) =>{
