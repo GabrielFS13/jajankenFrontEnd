@@ -59,8 +59,13 @@ const Jogos = () =>{
     
         function entraSala(e){
             e.preventDefault()
-            setCode(e.target[0].value)
-            socket.emit("codigo_sala", { codigo: e.target[0].value, id: id })
+            if(code === e.target[0].value){
+                alert("Você já está nessa sala!")
+            }else{
+                setCode(e.target[0].value)
+                socket.emit("codigo_sala", { codigo: e.target[0].value, id: id })
+            }
+            
         }
 
     function enviaChat(e){
@@ -78,35 +83,57 @@ const Jogos = () =>{
     useEffect( () =>{  
 
         socket.on("jogadas", (res) =>{
-           console.log(res)
+            console.log(res)
            if(res.status === 'Empate!'){
             setStatus(res.status)
-            setOponente(`/img/${res.p1.skin}/${res.p1.item}`)
+            if(res.p1.id === id){
+                setOponente(`/img/${res.p2.skin}/${res.p2.item}`)
+            }else{
+                setOponente(`/img/${res.p1.skin}/${res.p1.item}`)
+            }
             setInter(false)
            }else if(res.status === "Esperando oponente..."){
             setStatus(`${res.id} já fez sua jogada!, ${res.status} `)
            }
            else{
             if(res.p1.id === id){
+                if(res.p1.id !== id){
+                    setOponenteID(res.p1.id)
+                }
+                if(res.p2.id !== id){
+                    setOponenteID(res.p2.id)
+                }
                 setOponente(`/img/${res.p2.skin}/${res.p2.item}`)
                 setStatus(`${res.p1.id} ${res.status}`)
                 setInter(false)
+                console.log("Ganhou >", res.p1)
             }else{
+                if(res.p2.id !== id){
+                    setOponenteID(res.p2.id)
+                }
+                if(res.p1.id !== id){
+                    setOponenteID(res.p1.id)
+                }
                 setOponente(`/img/${res.p1.skin}/${res.p1.item}`)
                 setStatus(`${res.p1.id} ${res.status}`)
                 setInter(false)
+                console.log("Perdeu", res.p2)
             }
            }
         })
 
         socket.on('logado', (res) =>{
             console.log(res)
-            setOponenteID(res.player)
+            if(res !== id){
+                setOponenteID(res)
+            }
         })
 
         socket.on("novo_jogador", (res) =>{
             console.log(res)
-            setOponenteID(res)
+            if(res !== id){
+                setOponenteID(res)
+            }
 
         })
         
@@ -115,7 +142,6 @@ const Jogos = () =>{
         })
 
         socket.on("revice_msg", (res) =>{
-            console.log(res)
             setChat(res)
         })
         
@@ -176,7 +202,7 @@ const Jogos = () =>{
                 
             {messages.map(item => {
                     return(
-                        <div className='msg'>
+                        <div key={item.msg} className='msg'>
                             <h3 key={item.id}>{item.nome}: </h3>
                             <span key={item.msg}>{item.msg}</span>
                             <br />
