@@ -8,17 +8,57 @@
 }
 
 body{
-  min-height: 100vh;
+  height: auto;
   color: var(--font);
   background-color: var(--bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .chat{
-  height: 100px;;
-  width: 200px;
+  height: 400px;;
+  width: 400px;
   overflow-y: scroll;
+  scroll-behavior: smooth;
+  border: 2px solid;
+  padding: 10px;
+}
+.chat h3{
+  margin: 10px 20px;
+  color: black;
+}
+.chat span{
+  max-width: 100%;
+  font-size: 1.4em;
+  padding: 10px;
+  color: black;
 }
 
-.chat form{
+.msg{
+  max-width: 100%;
+  word-break: break-all;
+  background-color: #728EA6;
+  border-radius: 30px;
+  height: auto;
+  padding: 10px;
+}
+
+.select-estilo select{
+  padding: 10px;
+  border-radius: 20px;
+  width: 300px;
+}
+
+form{
   position: sticky;
 }
+
+form input, .chat-btn{
+  padding: 15px;
+  border-radius: 20px;
+  border: none;
+  margin: 10px;
+}
+

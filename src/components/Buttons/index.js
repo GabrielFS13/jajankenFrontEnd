@@ -1,6 +1,6 @@
 import './Buttons.css'
 
-const Buttons = ( {skin, jogada}) =>{
+const Buttons = ( {skin, jogada, desativa}) =>{
     const skins = skin
     //sistema de bot
 
@@ -28,9 +28,9 @@ const Buttons = ( {skin, jogada}) =>{
 */
     return (
         <div className="button-list">
-            <button onClick={ () => jogada(skins.papel)}><img src={skins.papel} alt="Papel" /></button>
-            <button onClick={ () => jogada(skins.tesoura)}><img src={skins.tesoura} alt="Tesoura" /></button>
-            <button onClick={ () => jogada(skins.pedra)}><img src={skins.pedra} alt="Pedra" /></button>
+            <button disabled={desativa} onClick={ () => jogada(skins.papel)}><img src={skins.papel} alt="Papel" /></button>
+            <button disabled={desativa} onClick={ () => jogada(skins.tesoura)}><img src={skins.tesoura} alt="Tesoura" /></button>
+            <button disabled={desativa} onClick={ () => jogada(skins.pedra)}><img src={skins.pedra} alt="Pedra" /></button>
         </div>
        
 

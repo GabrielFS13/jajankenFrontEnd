@@ -15,23 +15,41 @@ console.log(link)
 
 const Jogos = () =>{
 
-    const skins = {
-        "realista" :{
+    const skins = [
+        {
+            "estilo": "Realista",
             "tesoura": "/img/realista/tesoura.png",
             "pedra": "/img/realista/pedra.png",
             "papel": "/img/realista/papel.png"
         },
-        "desenho":{
+        {
+            "estilo": "Desenho",
             "tesoura": "/img/desenho/tesoura.png",
             "pedra": "/img/desenho/pedra.png",
             "papel": "/img/desenho/papel.png"
+        },
+        {
+            "estilo": "Meme",
+            "tesoura": "/img/meme/tesoura.png",
+            "pedra": "/img/meme/pedra.png",
+            "papel": "/img/meme/papel.png"
+        },
+        {
+            "estilo": "Minecraft",
+            "tesoura": "/img/minecraft/tesoura.png",
+            "pedra": "/img/minecraft/pedra.png",
+            "papel": "/img/minecraft/papel.png"
         }
-    }
+    ]
+        
+    console.log(skins)
+    
 
 
     function enviaJogada(jogada){
         setEscolha(jogada)
         setOponente('')
+        setInter(true)
         const item = jogada.split('/')
         socket.emit('jogada', {
             sala_code: code,
@@ -48,6 +66,7 @@ const Jogos = () =>{
         }
 
     function enviaChat(e){
+
         e.preventDefault()
         socket.emit("chat", {
             nome: id,
@@ -56,11 +75,7 @@ const Jogos = () =>{
         })
         e.target[0].value = ''
         
-        
     }
-
-
-
 
     useEffect( () =>{  
 
@@ -69,16 +84,21 @@ const Jogos = () =>{
            if(res.status === 'Empate!'){
             setStatus(res.status)
             setOponente(`/img/${res.p1.skin}/${res.p1.item}`)
+            setInter(false)
+           }else if(res.status === "Esperando oponente..."){
+            setStatus(`${res.id} já fez sua jogada!, ${res.status} `)
            }
            else{
             if(res.p1.id === id){
                 setOponenteID(res.p2.id)
                 setOponente(`/img/${res.p2.skin}/${res.p2.item}`)
                 setStatus(`${res.p1.id} ${res.status}`)
+                setInter(false)
             }else{
                 setOponenteID(res.p1.id)
                 setOponente(`/img/${res.p1.skin}/${res.p1.item}`)
                 setStatus(`${res.p1.id} ${res.status}`)
+                setInter(false)
             }
            }
         })
@@ -115,16 +135,18 @@ const Jogos = () =>{
     const [status, setStatus] = useState('')
     const [code, setCode] = useState('')
     const [messages, setChat] = useState([])
+    const [interrup, setInter] = useState(false)
+    const [skin, setSkin] = useState(0)
 
 
     return(
         <section className="jogo">
             <form onSubmit={(e) => entraSala(e)}>
-                <input type="text" placeholder='Codigo da sala' defaultValue={code} required/>
-                <button>Entrar</button>
+                <input type="text" placeholder='Codigo da sala' defaultValue={code} />
+                <button className='btn'>Entrar</button>
             </form>
             <div className='placar'>
-                <h2><input onChange={(e) => setID(e.target.value)} value={id} /></h2>
+                <input onChange={(e) => setID(e.target.value)} value={id} className='name-input' />
                 <h2>{oponenteID}</h2> 
             </div>
             <div className="escolhas">
@@ -140,27 +162,36 @@ const Jogos = () =>{
                 {status} 
             </div>
             <div className="botoes">
-                <Buttons skin={skins.realista} 
+                <Buttons skin={skins[skin]} 
                         jogada={enviaJogada} 
+                        desativa ={interrup}
                 />
             </div>
+
+            <div className='select-estilo'>
+                <select required onChange = {(e) => setSkin(e.target.value)}>
+                    {skins.map((skin, i) => <option key={skin.estilo} value={i}>{skin.estilo}</option> )}
+                </select>
+            </div>
+         
+           
             
             <div className='chat'>
                 
             {messages.map(item => {
                     return(
-                        <>
-                            <u key={item.id}>{item.nome}: </u>
+                        <div className='msg'>
+                            <h3 key={item.id}>{item.nome}: </h3>
                             <span key={item.msg}>{item.msg}</span>
                             <br />
-                        </>
+                        </div>
                     )
                 })}
-
+            
             </div>
             <form onSubmit={(e) => enviaChat(e)}>
-                    <input placeholder='Sua mensagem' />
-                    <button>Enviar</button>
+                    <input placeholder='Sua mensagem' required/>
+                    <button className='chat-btn'>Enviar</button>
                 </form> <br />
         </section>
     )
