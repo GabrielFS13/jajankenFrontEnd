@@ -51,8 +51,10 @@ const Jogos = () =>{
         e.preventDefault()
         socket.emit("chat", {
             nome: id,
-            msg: e.target[0].value
+            msg: e.target[0].value,
+            code: code
         })
+        e.target[0].value = ''
         
         
     }
@@ -98,9 +100,7 @@ const Jogos = () =>{
 
         socket.on("revice_msg", (res) =>{
             console.log(res)
-            setChat([...messages, res])
-
-            console.log(messages)
+            setChat(res)
         })
         
     }, [socket])
