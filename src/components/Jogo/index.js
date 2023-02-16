@@ -97,13 +97,11 @@ const Jogos = () =>{
            }
            else{
             if(res.p1.id === id){
-                setOponenteID(res.p2.id)
                 setOponente(`/img/${res.p2.skin}/${res.p2.item}`)
                 setStatus(`${res.p1.id} ${res.status}`)
                 setInter(false)
                 console.log("Ganhou >", res.p1)
             }else{
-                setOponenteID(res.p1.id)
                 setOponente(`/img/${res.p1.skin}/${res.p1.item}`)
                 setStatus(`${res.p1.id} ${res.status}`)
                 setInter(false)
@@ -127,7 +125,6 @@ const Jogos = () =>{
     
 
     const [id, setID] = useState('Guest'+Math.floor(Math.random()*300))
-    const [oponenteID, setOponenteID] = useState('')
     const [escolha, setEscolha] = useState('')
     const [opoente, setOponente] = useState('')
     const [status, setStatus] = useState('')
@@ -145,7 +142,6 @@ const Jogos = () =>{
             </form>
             <div className='placar'>
                 <input onChange={(e) => setID(e.target.value)} value={id} className='name-input' />
-                <h2>{oponenteID}</h2> 
             </div>
             <div className="escolhas">
                 <div className="choice">
