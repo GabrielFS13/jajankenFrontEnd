@@ -97,23 +97,13 @@ const Jogos = () =>{
            }
            else{
             if(res.p1.id === id){
-                if(res.p1.id !== id){
-                    setOponenteID(res.p1.id)
-                }
-                if(res.p2.id !== id){
-                    setOponenteID(res.p2.id)
-                }
+                setOponenteID(res.p2.id)
                 setOponente(`/img/${res.p2.skin}/${res.p2.item}`)
                 setStatus(`${res.p1.id} ${res.status}`)
                 setInter(false)
                 console.log("Ganhou >", res.p1)
             }else{
-                if(res.p2.id !== id){
-                    setOponenteID(res.p2.id)
-                }
-                if(res.p1.id !== id){
-                    setOponenteID(res.p1.id)
-                }
+                setOponenteID(res.p1.id)
                 setOponente(`/img/${res.p1.skin}/${res.p1.item}`)
                 setStatus(`${res.p1.id} ${res.status}`)
                 setInter(false)
