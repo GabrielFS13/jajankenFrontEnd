@@ -112,21 +112,7 @@ const Jogos = () =>{
            }
         })
 
-        socket.on('logado', (res) =>{
-            console.log(res)
-            if(res !== id){
-                setOponenteID(res)
-            }
-        })
-
-        socket.on("novo_jogador", (res) =>{
-            console.log(res)
-            if(res !== id){
-                setOponenteID(res)
-            }
-
-        })
-        
+    
         socket.on("RoomCode", (res) =>{
             setCode(res)
         })
