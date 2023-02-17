@@ -28,9 +28,19 @@ const Buttons = ( {skin, jogada, desativa}) =>{
 */
     return (
         <div className="button-list">
-            <button disabled={desativa} onClick={ () => jogada(skins.papel)}><img src={skins.papel} alt="Papel" /></button>
-            <button disabled={desativa} onClick={ () => jogada(skins.tesoura)}><img src={skins.tesoura} alt="Tesoura" /></button>
-            <button disabled={desativa} onClick={ () => jogada(skins.pedra)}><img src={skins.pedra} alt="Pedra" /></button>
+            <div className='btn-container'>
+                <label htmlFor="papel">Papel</label>
+                <button disabled={desativa} onClick={ () => jogada(skins.papel)}><img src={skins.papel} alt="Papel" id="papel"/></button>
+            </div>
+            <div className='btn-container'>
+                <label htmlFor="tesoura">Tesoura</label>
+                <button disabled={desativa} onClick={ () => jogada(skins.tesoura)}><img src={skins.tesoura} alt="Tesoura" id="tesoura" /></button>
+            </div>
+            <div className='btn-container'>
+                <label htmlFor="pedra">Pedra</label>
+                <button disabled={desativa} onClick={ () => jogada(skins.pedra)}><img src={skins.pedra} alt="Pedra" id="pedra" /></button>
+            </div>
+
         </div>
        
 

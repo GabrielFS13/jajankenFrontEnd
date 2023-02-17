@@ -7,6 +7,12 @@
   --font: #728EA6;
 }
 
+h1{
+  width: 100%;
+  text-align: center;
+  margin: 16px;
+}
+
 body{
   height: auto;
   color: var(--font);

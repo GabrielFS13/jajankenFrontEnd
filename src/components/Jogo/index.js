@@ -12,6 +12,8 @@ const socket = io(link, {
 
 console.log(link)
 
+var nome = ''
+
 
 const Jogos = () =>{
 
@@ -39,23 +41,44 @@ const Jogos = () =>{
             "tesoura": "/img/minecraft/tesoura.png",
             "pedra": "/img/minecraft/pedra.png",
             "papel": "/img/minecraft/papel.png"
+        },{
+            "estilo": "Gon (Hunter X Hunter)",
+            "tesoura": "/img/gon/tesoura.png",
+            "pedra": "/img/gon/pedra.png",
+            "papel": "/img/gon/papel.png"
+        },{
+            "estilo": "Fortnite",
+            "tesoura": "/img/fortnite/tesoura.png",
+            "pedra": "/img/fortnite/pedra.png",
+            "papel": "/img/fortnite/papel.png"
+        },{
+            "estilo": "Real",
+            "tesoura": "/img/real/tesoura.png",
+            "pedra": "/img/real/pedra.png",
+            "papel": "/img/real/papel.png"
         }
     ]
     
 
 
     function enviaJogada(jogada){
-        setEscolha(jogada)
-        setOponente('')
-        setInter(true)
-        const item = jogada.split('/')
-        socket.emit('jogada', {
-            sala_code: code,
-            skin: item[2],
-            item: item[3],
-            id: id
-         })
+        if(id && code){
+            nome = id
+            setEscolha(jogada)
+            setOponente('')
+            setInter(true)
+            const item = jogada.split('/')
+            socket.emit('jogada', {
+                sala_code: code,
+                skin: item[2],
+                item: item[3],
+                id: id
+            })
+        }else{
+            alert("Entre com um nickname e código de sala!!!")
         }
+        
+    }
     
         function entraSala(e){
             e.preventDefault()
@@ -80,51 +103,7 @@ const Jogos = () =>{
         
     }
 
-    useEffect( () =>{  
-
-        socket.on("jogadas", (res) =>{
-            console.log(res)
-           if(res.status === 'Empate!'){
-            setStatus(res.status)
-            if(res.p1.id === id){
-                setOponente(`/img/${res.p2.skin}/${res.p2.item}`)
-            }else{
-                setOponente(`/img/${res.p1.skin}/${res.p1.item}`)
-            }
-            setInter(false)
-           }else if(res.status === "Esperando oponente..."){
-            setStatus(`${res.id} já fez sua jogada!, ${res.status} `)
-           }
-           else{
-            if(res.p1.id === id){
-                setOponente(`/img/${res.p2.skin}/${res.p2.item}`)
-                setStatus(`${res.p1.id} ${res.status}`)
-                setInter(false)
-                console.log("Ganhou >", res.p1)
-            }else{
-                setOponente(`/img/${res.p1.skin}/${res.p1.item}`)
-                setStatus(`${res.p1.id} ${res.status}`)
-                setInter(false)
-                console.log("Perdeu", res.p2)
-            }
-           }
-        })
-
-    
-        socket.on("RoomCode", (res) =>{
-            setCode(res)
-        })
-
-        socket.on("revice_msg", (res) =>{
-            setChat(res)
-        })
-        
-    }, [socket])
-
-
-    
-
-    const [id, setID] = useState('Guest'+Math.floor(Math.random()*300))
+    const [id, setID] = useState('')
     const [escolha, setEscolha] = useState('')
     const [opoente, setOponente] = useState('')
     const [status, setStatus] = useState('')
@@ -134,14 +113,55 @@ const Jogos = () =>{
     const [skin, setSkin] = useState(0)
 
 
+    
+    useEffect( () =>{  
+
+        socket.on("jogadas", (res) =>{
+            //regra do backend, p1 sempre é o vencedor
+            const vencedor = res.p1.id
+            console.log(res)
+            console.log("ID: ", nome)
+            console.log("Vencedor: ", vencedor)
+           if(res.status === 'Empate!'){
+            setStatus(res.status)
+            if(res.p1.id === nome){
+                setOponente(`/img/${res.p2.skin}/${res.p2.item}`)
+                setInter(false)
+            }else{
+                setOponente(`/img/${res.p1.skin}/${res.p1.item}`)
+                setInter(false)
+            }
+           }else if(res.status === 'Esperando oponente...'){
+            setStatus(`${res.id} já fez sua jogada...`)
+           }else{
+            console.log("Dados rolaram!")
+            if(vencedor === nome){
+                setOponente(`/img/${res.p2.skin}/${res.p2.item}`)
+                setStatus(`${res.status}`)
+                setInter(false)
+            }else{
+                setOponente(`/img/${res.p1.skin}/${res.p1.item}`)
+                setStatus(`${res.status}`)
+                setInter(false)
+            }
+        }
+        })
+
+        socket.on("revice_msg", (res) =>{
+            setChat(res)
+        })
+        
+    }, [socket])
+
+
     return(
         <section className="jogo">
             <form onSubmit={(e) => entraSala(e)}>
-                <input type="text" placeholder='Codigo da sala' defaultValue={code} />
+                <input type="text" placeholder='Codigo da sala' defaultValue={''} required style={code ? {color: 'green'} : {color: 'black'}}/>
                 <button className='btn'>Entrar</button>
             </form>
             <div className='placar'>
-                <input onChange={(e) => setID(e.target.value)} value={id} className='name-input' />
+                <input onChange={(e) => setID(e.target.value)} required value={id} className='name-input' placeholder='Insira seu nickname' />
             </div>
             <div className="escolhas">
                 <div className="choice">
