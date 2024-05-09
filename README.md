@@ -1,8 +1,9 @@
 <h1 align="center">Jajanken PvP - Pedra, Papel e Tesoura</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Node.js-14.17.0-green" />
-  <img src="https://img.shields.io/badge/Socket.io-4.0.1-blue" />
+  <img src="https://img.shields.io/badge/React-17.0.2-blue" />
+  <img src="https://img.shields.io/badge/HTML-5-orange" />
+  <img src="https://img.shields.io/badge/CSS-3-brightgreen" />
 </p>
 
 ## Sobre o Projeto
